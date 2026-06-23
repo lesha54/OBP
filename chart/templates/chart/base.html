@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Музыкальный чарт</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .nav { margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; }
+        .track-card { background: white; border: 2px solid #b57c94; padding: 15px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; }
+        .track-avatar { width: 80px; height: 80px; border-radius: 50%; background: #c87a4b; margin-right: 20px; object-fit: cover; }
+        .track-info { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+        .stars { color: #e67e22; font-size: 20px; cursor: pointer; }
+        .star-rating { direction: rtl; display: inline-block; }
+        .star-rating input { display: none; }
+        .star-rating label { font-size: 20px; color: #ccc; cursor: pointer; }
+        .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #f1c40f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="{% url 'home' %}">Главная (Чарт)</a> | 
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_track' %}">Добавить трек</a> | 
+                {% if user.is_staff %}<a href="/admin/">Админ-панель</a> | {% endif %}
+                Привет, {{ user.username }}! <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="/admin/login/?next={{ request.path }}">Войти как пользователь/админ</a>
+            {% endif %}
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
